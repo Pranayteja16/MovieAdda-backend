@@ -24,7 +24,7 @@ app.use("/showtime", showtimerouter)
 app.use("/reservation", reservationrouter)
 
 mongoose.connection.on('open' , ()=>{
-     console.log("connected...")
+     console.log("connected")
  })
 
  app.listen(9000 ,()=>{

@@ -8,9 +8,7 @@ const locations = new Schema({
     trim: true,
     lowercase:true
   },
-  image:{
-    type: String
-  }
+ 
 })
 
 module.exports=mongoose.model("locations" , locations)

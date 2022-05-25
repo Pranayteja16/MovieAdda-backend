@@ -10,7 +10,7 @@ router.post('/addlocation',auth.enhance, async (req, res) => {
 
     const locationdetails = {
         location : req.body.location,
-        image: req.body.image
+        
     }
     try {
         await locations.create(locationdetails).then(userStoredData => {
@@ -32,19 +32,6 @@ router.get('/alllocations', async (req, res) => {
     }
   });
 
-  router.post('/getlocationbyimage', async (req, res) => {
-    try{
-            const image = req.body.image
-            const locations_list = await locations.find({ image: image})
-            if (!locations_list) {
-                return res.json({status: 'false' , data:"Locations not found"});
-              }else{
-            return res.send(locations_list);
-              }
-          } catch (err) {
-              res.json({status:'error' ,data: "Error Occured 2"});
-          }
-        });
 
 router.post('/searchlocation', async (req, res) => {
     try{

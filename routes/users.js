@@ -5,9 +5,6 @@ const bcrypt=require("bcryptjs")
 const auth=require("../middlewares/auth")
 const jwt=require("jsonwebtoken")
 const usermodel=require("../models/usermodel")
-const secretkey="pranayteja"
-const refreshkey="tejareddy"
-const refreshtokens=[]
 
 router.post("/login" , async(req,res) =>{
     const email = req.body.email
@@ -17,9 +14,9 @@ router.post("/login" , async(req,res) =>{
             bcrypt.compare(password ,existuser.password, function(err , response){
                 if(!err){
                     if(response){
-                        const token= jwt.sign({_id:existuser._id , email:existuser.email}, secretkey, {expiresIn:'1h'})
-                        const refreshtoken=jwt.sign({_id:existuser._id , email:existuser.email}, refreshkey, {expiresIn:'24h'})
-                        refreshtokens.push(refreshtoken)
+                        const token= jwt.sign({_id:existuser._id , email:existuser.email}, "secretkey", {expiresIn:'1h'})
+                        const refreshtoken=jwt.sign({_id:existuser._id , email:existuser.email}, "refreshkey", {expiresIn:'24h'})
+                       
                         console.log(token,"Accesstoken")
                         res.json({status:'ok', data:{token ,refreshtoken, response , existuser}})
                     }else if(!response){
@@ -38,12 +35,14 @@ router.post("/login" , async(req,res) =>{
 
 router.post("/renewaccesstoken", async(req,res)=>{
     const refreshtoken=req.body.refreshtoken
-    if(!refreshtoken || !refreshtokens.includes(refreshtoken)){
+   
+    if(!refreshtoken)
+    {
         return res.json({status:"False",message:"User not Authenticated"})
     }
-    jwt.verify(refreshtoken,refreshkey, (err,user)=>{
+    jwt.verify(refreshtoken,"refreshkey", (err,user)=>{
         if(!err){
-            const accesstoken= jwt.sign({_id:user._id , email:user.email}, secretkey, {expiresIn:'20s'})
+            const accesstoken= jwt.sign({_id:user._id , email:user.email}, secretkey, {expiresIn:'1h'})
             console.log(accesstoken,"renewaccesstoken")
             res.json({status:'ok', data:{accesstoken, user}})
         }else{
@@ -70,7 +69,7 @@ router.post('/signup', async(req,res) => {
         phoneno:req.body.phoneno,
         email : req.body.email,
         password : req.body.password,
-        role:"guest"
+        role:req.body.role
     }
     const salt = await bcrypt.genSalt(10)       
     await bcrypt.hash(req.body.password , salt).then(hashedPassword => {

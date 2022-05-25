@@ -1,8 +1,5 @@
 const jwt=require("jsonwebtoken")
 const User=require('../models/usermodel')
-
-const secretkey="pranay"
-
 const verifytoken= (req,res,next) =>{
     if(!req.headers.authorization){
         return res.json({status:"notoken" , data:"Unauthorized request"})
@@ -14,7 +11,7 @@ const verifytoken= (req,res,next) =>{
        return res.status(403).send("Token is required for authentication") 
     }else{
         try{
-        const decodedtoken=jwt.verify(token , secretkey)
+        const decodedtoken=jwt.verify(token , "secretkey")
         req.decodedtoken= decodedtoken
         }
     catch{
@@ -29,7 +26,7 @@ const enhance = async (req, res, next) => {
         return res.json({status:"error" , data:"Unauthorized request"})
       }
       const token =  req.headers.authorization.split(' ')[1]
-      const decoded = jwt.verify(token, secretkey);
+      const decoded = jwt.verify(token, "secretkey");
       
       const user = await User.findOne({
         email: decoded.email,

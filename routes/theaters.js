@@ -12,7 +12,7 @@ router.post('/addtheater',auth.enhance, async (req, res) => {
         theater : req.body.theater,
         title : req.body.title,
         location : req.body.location,
-        image : req.body.image
+        
     }
     try {
         await theaters.create(theaterdetails).then(userStoredData => {
@@ -48,19 +48,7 @@ router.post('/searchtheater', async (req, res) => {
         res.json({status:'error' ,data: "Something went wrong in selecting theater"});
     }
   });
-  router.post('/gettheaterbyimage', async (req, res) => {
-    try{
-            const image = req.body.image
-            const theaters_list = await theaters.find({ image: image})
-            if (!theaters_list) {
-                return res.json({status: 'false' , data:"Locations not found"});
-              }else{
-            return res.send(theaters_list);
-              }
-          } catch (err) {
-              res.json({status:'error' ,data: "Error Occured 2"});
-          }
-        });
+
 
   router.get('/gettheater/:title/:location', async (req, res) => {
     try {

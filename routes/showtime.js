@@ -120,7 +120,6 @@ router.get('/getshowtiming/:movie/:theater/:location/:showtiming', async (req, r
 
   router.post('/bookseats',async(req,res)=>{
 
-    // const { id, selected_seats} = req.body
     const seatdetails = {
         id : req.body.id,
         selected_seats : req.body.selected_seats

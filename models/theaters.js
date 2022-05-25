@@ -19,9 +19,7 @@ const theaters = mongoose.Schema({
     required: true,
     lowercase:true
   },
-  image:{
-      type: String,
-  }
+  
 
 })
 
