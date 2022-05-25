@@ -42,7 +42,7 @@ router.post("/renewaccesstoken", async(req,res)=>{
     }
     jwt.verify(refreshtoken,"refreshkey", (err,user)=>{
         if(!err){
-            const accesstoken= jwt.sign({_id:user._id , email:user.email}, secretkey, {expiresIn:'1h'})
+            const accesstoken= jwt.sign({_id:user._id , email:user.email}, "secretkey", {expiresIn:'1h'})
             console.log(accesstoken,"renewaccesstoken")
             res.json({status:'ok', data:{accesstoken, user}})
         }else{
